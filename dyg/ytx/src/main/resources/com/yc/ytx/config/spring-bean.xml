@@ -13,7 +13,9 @@
 
 	<!-- 加载并读取数据库连接的配置文件 -->
 	<context:property-placeholder location="classpath:db.properties" />
-
+	
+	
+<!-- 
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
     	<property name="driverClassName" value="${driverClass}"></property>
     	<property name="url" value="${url}"></property>
@@ -23,6 +25,21 @@
     	<property name="maxTotal" value="${maxTotal}"></property>
     	<property name="minIdle" value="${minIdle}"></property>
     </bean>
+ -->    
+ 
+ 
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${driverClass}"></property>
+		<property name="jdbcUrl" value="${url}"></property>
+		<property name="user" value="${user}"></property>
+		<property name="password" value="${password}"></property>
+		<!--连接池中保留的最小连接数。 -->
+		<property name="minPoolSize" value="${minIdle}"></property>
+		<!--连接池中保留的最大连接数。Default: 15 -->
+		<property name="maxPoolSize" value="${maxTotal}"></property>
+		<!--初始化时获取的连接数，取值应在minPoolSize与maxPoolSize之间。Default: 3 -->
+		<property name="initialPoolSize" value="${initialSize}"></property>
+	</bean>    
 
 	<!-- 配置mybatis会话工厂 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
